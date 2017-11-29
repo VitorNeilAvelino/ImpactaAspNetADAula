@@ -9,8 +9,9 @@ using System.Threading.Tasks;
 
 namespace Northwind.Repositorios.SqlServer.Ado
 {
-    public class ProdutoRepositorio
+    public class ProdutoRepositorio : RepositorioBase
     {
+        //Todo: refatorar para usar o base.Selecionar()
         public DataTable SelecionarPorCategoria(int categoriaId)
         {
             var produtoDataTable = new DataTable();
@@ -44,5 +45,20 @@ namespace Northwind.Repositorios.SqlServer.Ado
             return produtoDataTable;
         }
 
+        public DataTable SelecionarPorFornecedor(int fornecedorId)
+        {
+            var instrucao = @"SELECT 
+                                              [ProductName]
+                                              ,[UnitPrice]
+                                              ,[UnitsInStock]
+                                          FROM [Northwind].[dbo].[Products]
+                                          Where SupplierId = @SupplierId";
+
+            //var parametros = new SqlParameter[1];
+            //parametros[0] = new SqlParameter("SupplierId", fornecedorId);
+
+            return base.Selecionar(instrucao, 
+                new SqlParameter("SupplierId", fornecedorId));
+        }
     }
 }

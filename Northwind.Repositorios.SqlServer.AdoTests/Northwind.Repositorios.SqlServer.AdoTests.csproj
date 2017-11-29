@@ -53,6 +53,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="CategoriaRepositorioTests.cs" />
+    <Compile Include="FornecedorRepositorioTests.cs" />
     <Compile Include="ProdutoRepositorioTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
