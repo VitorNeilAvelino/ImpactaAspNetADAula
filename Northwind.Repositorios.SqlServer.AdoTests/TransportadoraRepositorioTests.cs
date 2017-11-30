@@ -2,7 +2,6 @@
 using Northwind.Repositorios.SqlServer.Ado;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,20 +9,20 @@ using System.Threading.Tasks;
 namespace Northwind.Repositorios.SqlServer.Ado.Tests
 {
     [TestClass()]
-    public class CategoriaRepositorioTests
+    public class TransportadoraRepositorioTests
     {
         [TestMethod()]
         public void SelecionarTest()
         {
-            var repositorio = new CategoriaRepositorio();
+            var repositorio = new TransportadoraRepositorio();
 
-            var categoriaDataTable = repositorio.Selecionar();
+            var transportadoras = repositorio.Selecionar();
 
-            Assert.AreNotEqual(0, categoriaDataTable.Rows.Count);
+            Assert.AreNotEqual(0, transportadoras.Count);
 
-            foreach (DataRow registro in categoriaDataTable.Rows)
+            foreach (var transportadora in transportadoras)
             {
-                Console.WriteLine($"{registro["CategoryID"]} - {registro[1]}");
+                Console.WriteLine($"{transportadora.Nome} - {transportadora.Telefone}");
             }
         }
     }

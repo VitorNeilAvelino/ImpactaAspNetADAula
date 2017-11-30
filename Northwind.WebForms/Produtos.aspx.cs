@@ -13,5 +13,15 @@ namespace Northwind.WebForms
         {
 
         }
+
+        protected void criterioRadioButtonList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //var rbl = (RadioButtonList)sender;
+            //criterioMultiview.ActiveViewIndex = criterioRadioButtonList.SelectedItem.Value;
+            //criterioMultiview.ActiveViewIndex = criterioRadioButtonList.SelectedValue;
+            criterioMultiview.ActiveViewIndex = criterioRadioButtonList.SelectedIndex;
+
+            produtosGrid.DataSourceID = $"produtosPor{criterioRadioButtonList.SelectedItem.Text}DataSource";
+        }
     }
 }
