@@ -7,7 +7,7 @@ using System.Data.SqlClient;
 
 namespace Northwind.Repositorios.SqlServer.Ado
 {
-    public class TransportadoraRepositorio
+    public class TransportadoraRepositorio : RepositorioListBase
     {
         private string _stringConexao = ConfigurationManager.ConnectionStrings["northwindConnectionString"].ConnectionString;
         
@@ -34,6 +34,103 @@ namespace Northwind.Repositorios.SqlServer.Ado
             }
 
             return transportadoras;
+        }
+
+        public Transportadora Selecionar(int id)
+        {
+            Transportadora transportadora = null;
+
+            using (var conexao = new SqlConnection(_stringConexao))
+            {
+                conexao.Open();
+
+                using (var comando = new SqlCommand("TransportadoraSelecionar", conexao))
+                {
+                    comando.CommandType = CommandType.StoredProcedure;
+                    comando.Parameters.Add(new SqlParameter("@shipperId", id));
+
+                    using (var registro = comando.ExecuteReader())
+                    {
+                        if (registro.Read())
+                        {
+                            transportadora = Mapear(registro);
+                        }
+                    }
+                }
+            }
+
+            return transportadora;
+        }
+
+        public void Inserir(Transportadora transportadora)
+        {
+            using (var conexao = new SqlConnection(_stringConexao))
+            {
+                conexao.Open();
+
+                using (var comando = new SqlCommand("TransportadoraInserir", conexao))
+                {
+                    comando.CommandType = CommandType.StoredProcedure;
+                    comando.Parameters.AddRange(Mapear(transportadora));
+
+                    transportadora.Id = Convert.ToInt32(comando.ExecuteScalar());
+                }
+            }
+        }
+
+        public void Atualizar(Transportadora transportadora)
+        {
+            base.ExecuteNonQuery("TransportadoraAtualizar", Mapear(transportadora));
+
+            //using (var conexao = new SqlConnection(_stringConexao))
+            //{
+            //    conexao.Open();
+
+            //    using (var comando = new SqlCommand("TransportadoraAtualizar", conexao))
+            //    {
+            //        comando.CommandType = CommandType.StoredProcedure;
+            //        comando.Parameters.AddRange(Mapear(transportadora));
+
+            //        //transportadora.Id = Convert.ToInt32(comando.ExecuteScalar());
+            //        comando.ExecuteNonQuery();
+            //    }
+            //}
+        }
+
+        public void Excluir(int id)
+        {
+            base.ExecuteNonQuery("TransportadoraExcluir", new SqlParameter("@shipperId", id));
+
+            //using (var conexao = new SqlConnection(_stringConexao))
+            //{
+            //    conexao.Open();
+
+            //    using (var comando = new SqlCommand("TransportadoraExcluir", conexao))
+            //    {
+            //        comando.CommandType = CommandType.StoredProcedure;
+            //        //comando.Parameters.AddRange(Mapear(transportadora));
+            //        comando.Parameters.AddWithValue("@shipperId", id);
+            //        //comando.Parameters.Add(new SqlParameter());
+
+            //        //transportadora.Id = Convert.ToInt32(comando.ExecuteScalar());
+            //        comando.ExecuteNonQuery();
+            //    }
+            //}
+        }
+
+        private SqlParameter[] Mapear(Transportadora transportadora)
+        {
+            var parametros = new List<SqlParameter>();
+
+            if (transportadora.Id != 0)
+            {
+                parametros.Add(new SqlParameter("@shipperId", transportadora.Id));
+            }
+
+            parametros.Add(new SqlParameter("@companyName", transportadora.Nome));
+            parametros.Add(new SqlParameter("@phone", transportadora.Telefone));
+
+            return parametros.ToArray();
         }
 
         private Transportadora Mapear(SqlDataReader registro)
