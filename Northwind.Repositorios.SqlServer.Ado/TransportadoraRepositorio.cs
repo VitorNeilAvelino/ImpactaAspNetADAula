@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 
 namespace Northwind.Repositorios.SqlServer.Ado
 {
@@ -13,69 +14,77 @@ namespace Northwind.Repositorios.SqlServer.Ado
         
         public List<Transportadora> Selecionar()
         {
-            var transportadoras = new List<Transportadora>();
+            return base.ExecuteReader("TransportadoraSelecionar", Mapear);
 
-            using (var conexao = new SqlConnection(_stringConexao))
-            {
-                conexao.Open();
+            //var transportadoras = new List<Transportadora>();
 
-                using (var comando = new SqlCommand("TransportadoraSelecionar", conexao))
-                {
-                    comando.CommandType = CommandType.StoredProcedure;
+            //using (var conexao = new SqlConnection(_stringConexao))
+            //{
+            //    conexao.Open();
 
-                    using (var registro = comando.ExecuteReader())
-                    {
-                        while (registro.Read())
-                        {
-                            transportadoras.Add(Mapear(registro));
-                        }
-                    }
-                }
-            }
+            //    using (var comando = new SqlCommand("TransportadoraSelecionar", conexao))
+            //    {
+            //        comando.CommandType = CommandType.StoredProcedure;
 
-            return transportadoras;
+            //        using (var registro = comando.ExecuteReader())
+            //        {
+            //            while (registro.Read())
+            //            {
+            //                transportadoras.Add(Mapear(registro));
+            //            }
+            //        }
+            //    }
+            //}
+
+            //return transportadoras;
         }
 
         public Transportadora Selecionar(int id)
         {
-            Transportadora transportadora = null;
+            return base.ExecuteReader("TransportadoraSelecionar", Mapear, 
+                new SqlParameter("@shipperId", id)).SingleOrDefault();
 
-            using (var conexao = new SqlConnection(_stringConexao))
-            {
-                conexao.Open();
+            //Transportadora transportadora = null;
 
-                using (var comando = new SqlCommand("TransportadoraSelecionar", conexao))
-                {
-                    comando.CommandType = CommandType.StoredProcedure;
-                    comando.Parameters.Add(new SqlParameter("@shipperId", id));
+            //using (var conexao = new SqlConnection(_stringConexao))
+            //{
+            //    conexao.Open();
 
-                    using (var registro = comando.ExecuteReader())
-                    {
-                        if (registro.Read())
-                        {
-                            transportadora = Mapear(registro);
-                        }
-                    }
-                }
-            }
+            //    using (var comando = new SqlCommand("TransportadoraSelecionar", conexao))
+            //    {
+            //        comando.CommandType = CommandType.StoredProcedure;
+            //        comando.Parameters.Add(new SqlParameter("@shipperId", id));
 
-            return transportadora;
+            //        using (var registro = comando.ExecuteReader())
+            //        {
+            //            if (registro.Read())
+            //            {
+            //                transportadora = Mapear(registro);
+            //            }
+            //        }
+            //    }
+            //}
+
+            //return transportadora;
         }
 
         public void Inserir(Transportadora transportadora)
         {
-            using (var conexao = new SqlConnection(_stringConexao))
-            {
-                conexao.Open();
+            transportadora.Id = Convert.ToInt32(base.ExecuteScalar("TransportadoraInserir", 
+                Mapear(transportadora)));
 
-                using (var comando = new SqlCommand("TransportadoraInserir", conexao))
-                {
-                    comando.CommandType = CommandType.StoredProcedure;
-                    comando.Parameters.AddRange(Mapear(transportadora));
+            //using (var conexao = new SqlConnection(_stringConexao))
+            //{
+            //    conexao.Open();
 
-                    transportadora.Id = Convert.ToInt32(comando.ExecuteScalar());
-                }
-            }
+            //    using (var comando = new SqlCommand("TransportadoraInserir", conexao))
+            //    {
+            //        comando.CommandType = CommandType.StoredProcedure;
+            //        comando.Parameters.AddRange(Mapear(transportadora));
+
+            //        transportadora.Id = Convert.ToInt32(comando.ExecuteScalar());
+            //    }
+            //}
         }
 
         public void Atualizar(Transportadora transportadora)
