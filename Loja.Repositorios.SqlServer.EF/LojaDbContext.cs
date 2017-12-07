@@ -1,4 +1,5 @@
 ﻿using Loja.Dominio;
+using Loja.Repositorios.SqlServer.EF.Migrations;
 using Loja.Repositorios.SqlServer.EF.ModelConfiguration;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,11 @@ namespace Loja.Repositorios.SqlServer.EF
         {
             //Database.SetInitializer(new LojaDbInitializer());
 
-            //Database.SetInitializer(new MigrateDatabaseToLatestVersion<LojaDbContext, Configuration>());
+            //1. Enable-Migrations - digitar no console do Nuget.
+            //2. Update-Database
+
+            Database.SetInitializer(new 
+                MigrateDatabaseToLatestVersion<LojaDbContext, Configuration>());
         }
 
         public DbSet<Produto> Produtos { get; set; }

@@ -55,6 +55,10 @@
     <Compile Include="Migrations\201712060006443_InitialCreate.Designer.cs">
       <DependentUpon>201712060006443_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201712062130527_AdicionarProdutoImagem.cs" />
+    <Compile Include="Migrations\201712062130527_AdicionarProdutoImagem.Designer.cs">
+      <DependentUpon>201712062130527_AdicionarProdutoImagem.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ModelConfiguration\CategoriaConfiguration.cs" />
     <Compile Include="ModelConfiguration\ProdutoConfiguration.cs" />
@@ -74,6 +78,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201712060006443_InitialCreate.resx">
       <DependentUpon>201712060006443_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712062130527_AdicionarProdutoImagem.resx">
+      <DependentUpon>201712062130527_AdicionarProdutoImagem.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
