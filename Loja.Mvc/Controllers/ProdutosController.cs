@@ -55,16 +55,21 @@ namespace Loja.Mvc.Controllers
         // GET: Produtos/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            return View(Mapeamento.Mapear(_db.Produtos.Find(id), 
+                                                                _db.Categorias.ToList()));
         }
 
         // POST: Produtos/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(ProdutoViewModel viewModel)
         {
             try
             {
-                // TODO: Add update logic here
+                var produto = _db.Produtos.Find(viewModel.Id);
+
+                Mapeamento.Mapear(viewModel, produto, _db);
+
+                _db.SaveChanges();
 
                 return RedirectToAction("Index");
             }
@@ -77,16 +82,21 @@ namespace Loja.Mvc.Controllers
         // GET: Produtos/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            return View(Mapeamento.Mapear(_db.Produtos.Find(id)));
         }
 
         // POST: Produtos/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        [ActionName("Delete")]
+        public ActionResult DeleteConfirmed(int id)
         {
             try
             {
-                // TODO: Add delete logic here
+                var produto = _db.Produtos.Find(id);
+
+                _db.Produtos.Remove(produto);
+
+                _db.SaveChanges();
 
                 return RedirectToAction("Index");
             }
