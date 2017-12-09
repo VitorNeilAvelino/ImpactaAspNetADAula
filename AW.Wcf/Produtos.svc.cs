@@ -23,7 +23,12 @@ namespace AW.Wcf
 
         public List<Product> SelecionarPorNome(string nome)
         {
-            throw new NotImplementedException();
+            using (var db = new AdventureWorks2012Entities())
+            {
+                return db.Products
+                    .Where(p => p.Name.Contains(nome))
+                    .ToList();
+            }
         }
     }
 }
